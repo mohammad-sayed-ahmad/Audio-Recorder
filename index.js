@@ -7,9 +7,4 @@ async function modifyImportArea(event) {
     importArea.textContent = trimmedText;
 }
 
-function moveToRecord(event){
-    document.getElementById("recordLink").click();
-}
-
 document.getElementById("importFile").addEventListener("input", modifyImportArea)
-document.getElementById("importNext").addEventListener("click", moveToRecord);

@@ -1,3 +1,16 @@
+.import-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5rem;
+
+    padding-inline: 5rem;
+
+    #importNext {
+        width: 8rem;
+    }
+}
+
 /* Custom CSS for the circular buttons */
 .circular-button-lg,
 .circular-button-sm {
