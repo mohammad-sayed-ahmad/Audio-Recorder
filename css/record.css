@@ -1,0 +1,39 @@
+/* Custom CSS for the circular buttons */
+.circular-button-lg,
+.circular-button-sm {
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.circular-button-lg {
+    width: 8rem;
+    height: 8rem;
+    font-size: 3rem;
+}
+
+.circular-button-sm {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+}
+
+.circular-button-lg i,
+.circular-button-sm i {
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive height for the completed lines menu */
+.completed-lines-scroll {
+    height: 70vh; /* Default height for tablets and desktops */
+}
+
+@media (max-width: 767.98px) {
+    /* Half the screen height on mobile */
+    .completed-lines-scroll {
+        height: 30vh;
+    }
+}
