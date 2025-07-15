@@ -53,72 +53,53 @@
 
 /* Custom CSS Variables for Dark Theme Colors */
 :root {
-    --primary-color: #0d6efd; /* Bootstrap blue for active line */
+    --primary-color-emphasis: #6ea8fe; /* Bootstrap blue for active line */
+    --primary-color-hover: #8bb9fe;
     --body-bg: #212529; /* Dark background */
-    --body-text: #f8f9fa; /* Light text */
-    --border-color: #495057; /* Darker grey for main nav line */
-    --hover-bg: rgba(255, 255, 255, 0.05); /* Very subtle hover background */
 }
 
 /* Basic Body Styles (for context) */
 body {
     margin: 0;
+
+    color: var(--body-text);
+    background-color: var(--body-bg);
+
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: 1rem;
     line-height: 1.5;
-    color: var(--body-text);
-    background-color: var(--body-bg);
 }
 
-/* Placeholder for main content (matches body background for visual blend) */
-.main-content {
-    padding: 1rem;
-    background-color: var(--body-bg); /* Match body background */
-    min-height: 200px;
-}
 
-/* Minimalistic Underline Navigation Styles */
-.app-nav {
-    /* The overall navigation underline, but note the -1px margin to handle active state */
-    border-bottom: 1px solid var(--border-color);
-}
-
-.nav-links {
+.top-tabs {
     display: flex; /* Arrange items horizontally */
-    list-style: none; /* Remove bullet points */
+    gap: 1rem;
+
     padding: 0;
+    padding-bottom: 1rem;
     margin: 0;
-}
 
-.nav-links li {
-    flex: 1 1 auto; /* Make each list item take equal space (fill effect) */
+    list-style: none; /* Remove bullet points */
     text-align: center;
-    /* No margin-bottom: -1px here on the li, as the active state changes the link's border directly */
-}
 
-.nav-item-link {
-    display: block; /* Make the whole link clickable */
-    padding: 0.5rem 1rem; /* Standard padding */
-    color: var(--body-text); /* Default link text color (light grey) */
-    text-decoration: none; /* Remove underline from links */
-    background-color: transparent; /* No background fill */
-    border-bottom: 3px solid transparent; /* Prepare for active underline */
-    transition: all 0.15s ease-in-out; /* Smooth transitions */
-}
+    li {
+        display: block;
+        flex: 1 1 auto;
+        padding: 0.5rem 1rem;
 
-.nav-item-link:hover,
-.nav-item-link:focus {
-    color: var(--primary-color); /* Highlight text on hover */
-    background-color: var(--hover-bg); /* Very subtle background on hover */
-    border-bottom-color: var(--primary-color); /* A subtle underline on hover */
-}
+        color: var(--primary-color-emphasis);
+        border-bottom: 0.125rem solid transparent;
+        transition: all 0.15s ease-in-out;
+    }
 
-.nav-item-link.active {
-    color: white; /* Active link text color (blue) */
-    background-color: transparent; /* No background fill, keeps it minimalistic */
-    border-bottom: 5px solid var(--body-text); /* Prominent blue underline */
-    font-weight: 500;
+    li:hover, li:focus {
+        color: var(--primary-color-hover);
+        border-bottom-color: var(--primary-color-hover);
+    }
 
-    margin-bottom: -1px; /* Crucial: This pulls the active link down to cover the main nav border */
-    z-index: 1; /* Ensure the active link's border is on top if needed */
+    li.active {
+        color: white;
+        border-bottom: 0.125rem solid white;
+        font-weight: 700;
+    }
 }

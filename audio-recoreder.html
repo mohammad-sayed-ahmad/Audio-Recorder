@@ -9,19 +9,11 @@
   <link rel="stylesheet" href="./index.css">
 </head>
 <body x-data="{stage: 'import'}">
-  <nav class="app-nav">
-    <ul class="nav-links">
-      <li>
-        <a class = "nav-item-link" :class="stage === 'import' && 'active'" @click="stage = 'import'">1. Import</a>
-      </li>
-      <li>
-        <a class = "nav-item-link" :class="stage === 'record' && 'active'" @click="stage = 'record'">2. Record</a>
-      </li>
-      <li >
-        <a class = "nav-item-link" :class="stage === 'export' && 'active'" @click="stage = 'export'">3. Export</a>
-      </li>
-    </ul>
-  </nav>
+    <menu class="top-tabs">
+      <li :class="stage === 'import' && 'active'" @click="stage = 'import'">1. Import</li>
+      <li :class="stage === 'record' && 'active'" @click="stage = 'record'">2. Record</li>
+      <li :class="stage === 'export' && 'active'" @click="stage = 'export'">3. Export</li>
+    </menu>
   <div class="tab-content">
     <div class="tab-pane" :class="stage == 'import' && 'active'">
       <div class="import-container">
