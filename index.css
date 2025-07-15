@@ -114,10 +114,11 @@ body {
 }
 
 .nav-item-link.active {
-    color: var(--primary-color); /* Active link text color (blue) */
+    color: white; /* Active link text color (blue) */
     background-color: transparent; /* No background fill, keeps it minimalistic */
-    border-bottom: 3px solid var(--primary-color); /* Prominent blue underline */
-    /* Adjust margin-bottom on active link itself to pull it down slightly and cover the main nav's border */
+    border-bottom: 5px solid var(--body-text); /* Prominent blue underline */
+    font-weight: 500;
+
     margin-bottom: -1px; /* Crucial: This pulls the active link down to cover the main nav border */
     z-index: 1; /* Ensure the active link's border is on top if needed */
 }
