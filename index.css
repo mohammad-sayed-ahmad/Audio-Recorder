@@ -11,6 +11,11 @@
     }
 }
 
+.hidden {
+    display: none;
+}
+
+
 /* Custom CSS for the circular buttons */
 .circular-button-lg,
 .circular-button-sm {

@@ -8,22 +8,20 @@
   <link rel="stylesheet" href="./bootstrap-icons-1.13.1/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./index.css">
 </head>
-<body x-data="{stage: 'import'}">
+<body x-data="{stage: 'import', lines: []}">
   <menu class="top-tabs">
     <li :class="stage === 'import' && 'active'" @click="stage = 'import'">1. Import</li>
     <li :class="stage === 'record' && 'active'" @click="stage = 'record'">2. Record</li>
     <li :class="stage === 'export' && 'active'" @click="stage = 'export'">3. Export</li>
   </menu>
 
-  <div class="tab-content">
-    <div class="tab-pane" :class="stage == 'import' && 'active'">
-      <div class="import-container">
-        <textarea id="importArea" class="form-control" rows="10" placeholder="Paste lines here, each on a new line..."></textarea>
-        <input id="importFile" class="form-control" type="file">
-        <button class="btn btn-outline-primary" @click="stage = 'record'">Next <i class="bi bi-arrow-right"></i></button>
-      </div>
-    </div>
-   <div class="tab-pane" :class="stage == 'record' && 'active' ">
+  <div class="import-container" :class="stage == 'import' || 'hidden'">
+    <textarea id="importArea" class="form-control" rows="10" @input="lines = generateLines($el.textContent)" placeholder="Paste lines here, each on a new line..."></textarea>
+    <input id="importFile" class="form-control" type="file">
+    <button class="btn btn-outline-primary" @click="stage = 'record'">Next <i class="bi bi-arrow-right"></i></button>
+  </div>
+
+   <div class="tab-pane" :class="stage == 'record' || 'hidden' ">
     <div class="container-fluid py-4">
       <div class="row g-4">
         <div class="col-12 col-md-4">
@@ -37,10 +35,10 @@
                     </span>
                     This is a sample completed line.
                 </button>
-                              <button type="button" class="list-group-item list-group-item-action">
+                <button type="button" class="list-group-item list-group-item-action">
                     This is a sample completed line.
                 </button>
-                              <button type="button" class="list-group-item list-group-item-action">
+                <button type="button" class="list-group-item list-group-item-action">
                     This is a sample completed line.
                 </button>
               </ul>
@@ -66,7 +64,6 @@
         </div>
       </div>
     </div>
-  </div>
   <script src="index.js"></script>
   <script src="alpine.js"></script>
 </body>
