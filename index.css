@@ -123,8 +123,7 @@ body {
 
 /* --- Completed Lines Column (Now acts as the "card" and scrollable area) --- */
 .completed-lines-list {
-    /* Scrollability (moved from inner div) */
-    height: 40vh; /* Default height for tablets and desktops (moved from scroll-area-custom) */
+    height: 40vh;
     padding: 0;
     margin: 0;
     overflow-y: auto;

@@ -4,11 +4,16 @@ async function modifyImportArea(event) {
     
     document.getElementById("importArea").textContent = trimmedText;
 }
+document.getElementById("importFile").addEventListener("input", modifyImportArea)
 
 function generateLines(text) {
-    return text.split('\n').map((x) => {
-        return {"text": x, "recording": undefined};
-    });
+    var newLines = [];
+    for (const [index, line] of text.split('\n').entries()){
+        newLines.push({
+            text: line,
+            recording: null,
+            shown: index == 0
+        })
+    }
 }
 
-document.getElementById("importFile").addEventListener("input", modifyImportArea)
