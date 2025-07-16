@@ -15,55 +15,41 @@
     <li :class="stage === 'export' && 'active'" @click="stage = 'export'">3. Export</li>
   </menu>
 
-  <div class="import-container" :class="stage == 'import' || 'hidden'">
+  <section class="import-container" :class="stage == 'import' || 'hidden'">
     <textarea id="importArea" class="form-control" rows="10" @input="lines = generateLines($el.textContent)" placeholder="Paste lines here, each on a new line..."></textarea>
     <input id="importFile" class="form-control" type="file">
     <button class="btn btn-outline-primary" @click="stage = 'record'">Next <i class="bi bi-arrow-right"></i></button>
-  </div>
+  </section>
 
-   <div class="tab-pane" :class="stage == 'record' || 'hidden' ">
-    <div class="container-fluid py-4">
-      <div class="row g-4">
-        <div class="col-12 col-md-4">
-          <div class="card bg-dark text-white h-100 p-3">
-            <h5 class="card-title">Completed Lines</h5>
-            <div class="overflow-y-scroll completed-lines-scroll">
-              <ul id="completedLinesList" class="list-group">
-                <button type="button" class="list-group-item list-group-item-action">
-                    <span class="text-success me-2">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </span>
-                    This is a sample completed line.
-                </button>
-                <button type="button" class="list-group-item list-group-item-action">
-                    This is a sample completed line.
-                </button>
-                <button type="button" class="list-group-item list-group-item-action">
-                    This is a sample completed line.
-                </button>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-8 d-flex flex-column align-items-center justify-content-center">
-          
-          <div class="card bg-dark text-white p-4 w-100 text-center">
-              <h2 id="currentLine" class="my-auto"></h2>
-          </div>
-          
-          <audio id="audioPlayback" controls class="mt-3 w-75 d-none"></audio>
+  <section class="record-container" :class="stage == 'record' || 'hidden'">
+    <ul class="completed-lines-list">
+      <li>
+          <i class="bi bi-check-circle-fill text-success me-2"></i>
+          This is a sample completed line.
+      </li>
+      <li class="active">This is a sample completed line. </li>
+      <li>This is a sample completed line.</li>
+      <li>This is a sample completed line.</li>
 
-          <div class="d-flex align-items-center gap-4 mt-4">
-            <button id="recordButton" class="circular-button-lg btn btn-primary">
-              <i class="bi bi-mic-fill"></i>
-            </button>
-            <button id="nextButton" class="circular-button-sm btn btn-success" disabled>
-              <i class="bi bi-arrow-down-circle-fill"></i>
-            </button>
-          </div>
-        </div>
+    </ul>
+
+    <div class="record-controls-column">
+      <div class="card bg-dark text-white p-4 w-100 text-center">
+          <h2 id="currentLine">heloo</h2>
+      </div>
+      
+      <audio id="audioPlayback" controls class="mt-3 w-75"></audio>
+
+      <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
+        <button id="recordButton" class="circular-button large btn btn-primary">
+          <i class="bi bi-mic-fill"></i>
+        </button>
+        <button id="nextButton" class="circular-button small btn btn-success" disabled>
+          <i class="bi bi-arrow-down-circle-fill"></i>
+        </button>
       </div>
     </div>
+    </section>
   <script src="index.js"></script>
   <script src="alpine.js"></script>
 </body>

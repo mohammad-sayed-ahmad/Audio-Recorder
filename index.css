@@ -1,10 +1,21 @@
+/* Custom CSS Variables for Dark Theme Colors */
+:root {
+    --primary-color: #0d6efd;
+    --primary-color-emphasis: #6ea8fe; /* Bootstrap blue for active line */
+    --primary-color-hover: #8bb9fe;
+    --body-bg: #212529; /* Dark background */
+    --border-color: #343a40;
+
+    --tab-padding: 5vw;
+}
+
 .import-container {
     display: flex;
+    padding-inline: var(--tab-padding);
+    
+    gap: 1.5rem;
     flex-direction: column;
     align-items: flex-end;
-    gap: 1.5rem;
-
-    padding-inline: 5rem;
 
     #importNext {
         width: 8rem;
@@ -12,55 +23,29 @@
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 
 /* Custom CSS for the circular buttons */
-.circular-button-lg,
-.circular-button-sm {
+.circular-button {
     border-radius: 50%;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.circular-button-lg {
+.circular-button.large {
     width: 8rem;
     height: 8rem;
     font-size: 3rem;
 }
 
-.circular-button-sm {
+.circular-button.small {
     width: 4rem;
     height: 4rem;
     font-size: 1.5rem;
-}
-
-.circular-button-lg i,
-.circular-button-sm i {
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Responsive height for the completed lines menu */
-.completed-lines-scroll {
-    height: 70vh; /* Default height for tablets and desktops */
-}
-
-@media (max-width: 767.98px) {
-    /* Half the screen height on mobile */
-    .completed-lines-scroll {
-        height: 30vh;
-    }
-}
-
-/* Custom CSS Variables for Dark Theme Colors */
-:root {
-    --primary-color-emphasis: #6ea8fe; /* Bootstrap blue for active line */
-    --primary-color-hover: #8bb9fe;
-    --body-bg: #212529; /* Dark background */
 }
 
 /* Basic Body Styles (for context) */
@@ -74,7 +59,6 @@ body {
     font-size: 1rem;
     line-height: 1.5;
 }
-
 
 .top-tabs {
     display: flex; /* Arrange items horizontally */
@@ -108,3 +92,63 @@ body {
         font-weight: 700;
     }
 }
+
+.record-container {
+    display: grid;
+    padding-inline: calc(var(--tab-padding) * 0.25);
+
+    gap: 2vw;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    
+}
+
+.record-controls-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Media query for medium screens (md breakpoint: 768px) */
+@media (min-width: 768px) {
+    .record-container {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    ul.completed-lines-list {
+        height: 90vh;
+    }
+}
+
+/* --- Completed Lines Column (Now acts as the "card" and scrollable area) --- */
+.completed-lines-list {
+    /* Scrollability (moved from inner div) */
+    height: 40vh; /* Default height for tablets and desktops (moved from scroll-area-custom) */
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    
+    border: 1px solid var(--border-color); /* Subtle border for card effect */
+    border-radius: 0.375rem;
+
+    list-style: none;
+
+    li {
+        text-align: left;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        transition: all 0.15s ease-in-out;
+    }
+    
+    li:hover, li:focus {
+        z-index: 1;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    li.active {
+        background-color: var(--primary-color);
+    }
+}
+
