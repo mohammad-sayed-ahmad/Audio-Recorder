@@ -39,7 +39,7 @@
 .circular-button.large {
     width: 8rem;
     height: 8rem;
-    font-size: 3rem;
+    font-size: 4rem; /* Controls the size of the icon inside */
 }
 
 .circular-button.small {

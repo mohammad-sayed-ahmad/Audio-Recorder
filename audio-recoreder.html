@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="./bootstrap-icons-1.13.1/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./index.css">
 </head>
-<body x-data="{stage: 'import', lines: []}">
+<body x-data="{stage: $persist('import'), lines: $persist([])}">
   <menu class="top-tabs">
     <li :class="stage === 'import' && 'active'" @click="stage = 'import'">1. Import</li>
     <li :class="stage === 'record' && 'active'" @click="stage = 'record'">2. Record</li>
@@ -16,41 +16,48 @@
   </menu>
 
   <section class="import-container" :class="stage == 'import' || 'hidden'">
-    <textarea id="importArea" class="form-control" rows="10" @input="lines = generateLines($el.textContent)" placeholder="Paste lines here, each on a new line..."></textarea>
+    <textarea id="importArea" class="form-control" rows="10" @input="lines = generateLines($el.value)" placeholder="Paste lines here, each on a new line..." x-init="$el.value=lines.map(x => x.text).join('\n')"></textarea>
     <input id="importFile" class="form-control" type="file">
     <button class="btn btn-outline-primary" @click="stage = 'record'">Next <i class="bi bi-arrow-right"></i></button>
   </section>
 
-  <section class="record-container" :class="stage == 'record' || 'hidden'">
+  <section class="record-container" :class="stage == 'record' || 'hidden'" x-data="{currentLineIndex: 0, isRecording: false}">
     <ul class="completed-lines-list">
-      <li>
-          <i class="bi bi-check-circle-fill text-success me-2"></i>
-          This is a sample completed line.
-      </li>
-      <li class="active">This is a sample completed line. </li>
-      <li>This is a sample completed line.</li>
-      <li>This is a sample completed line.</li>
-
+        <template x-for="(line, index) in lines" :key="index">
+            <li :class="{ 'active': index === currentLineIndex }" @click="currentLineIndex = index">
+                <template x-if="line.recording">
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                </template>
+                <span x-text="line.text"></span>
+            </li>
+        </template>
     </ul>
 
     <div class="record-controls-column">
       <div class="card bg-dark text-white p-4 w-100 text-center">
-          <h2 id="currentLine">heloo</h2>
+          <h2 x-text="lines[currentLineIndex].text" ></h2>
       </div>
       
-      <audio id="audioPlayback" controls class="mt-3 w-75"></audio>
+      <audio id="audioPlayback"
+            :src="lines[currentLineIndex].recording"
+            controls class="mt-3 w-75"></audio>
 
       <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
-        <button id="recordButton" class="circular-button large btn btn-primary">
-          <i class="bi bi-mic-fill"></i>
+        <button id="recordButton" class="circular-button large btn"
+                :class="isRecording ? 'btn-danger' : (lines[currentLineIndex].recording === null ? 'btn-primary' : 'btn-info')"
+                @click="isRecording ? stopRecording() : startRecording(lines, currentLineIndex); isRecording = !isRecording" >
+          <i class="bi" 
+             :class="isRecording ? 'bi-arrow-down-square-fill': (lines[currentLineIndex].recording === null ? 'bi-mic-fill' : 'bi-repeat')"></i>
         </button>
-        <button id="nextButton" class="circular-button small btn btn-success" disabled>
+        <button id="nextButton" class="circular-button small btn btn-success">
           <i class="bi bi-arrow-down-circle-fill"></i>
         </button>
       </div>
     </div>
     </section>
+  <script src="./static/persist.js"></script>
+  <script src="./static/alpine.js"></script>
   <script src="index.js"></script>
-  <script src="alpine.js"></script>
+
 </body>
 </html>
