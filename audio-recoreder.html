@@ -21,7 +21,7 @@
     <button class="btn btn-outline-primary" @click="stage = 'record'">Next <i class="bi bi-arrow-right"></i></button>
   </section>
 
-  <section class="record-container" :class="stage == 'record' || 'hidden'" x-data="{currentLineIndex: 0, isRecording: false}">
+  <section class="record-container" :class="stage == 'record' || 'hidden'">
     <ul class="completed-lines-list">
         <template x-for="(line, index) in lines" :key="index">
             <li :class="{ 'active': index === currentLineIndex }" @click="currentLineIndex = index">
@@ -38,28 +38,14 @@
           <h2 x-text="lines[currentLineIndex].text" ></h2>
       </div>
       
-      <audio id="audioPlayback"
-            :src="URL.createObjectURL(lines[currentLineIndex].recording)"
-            controls class="mt-3 w-75"></audio>
+      <audio id="audioPlayback" controls class="mt-3 w-75"></audio>
 
       <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
-        <button id="recordButton" class="circular-button large btn"
-                :class="isRecording ? 'btn-danger' : (lines[currentLineIndex].recording === null ? 'btn-primary' : 'btn-info')"
-                @click="isRecording ? stopRecordingProcess().then((x) => {
-                  lines[currentLineIndex].recording = x;
-                  currentLineIndex++;
-                  }) : startRecordingProcess();
-                  isRecording = !isRecording">
-          <i class="bi" 
-             :class="isRecording ? 'bi-arrow-down-square-fill': (lines[currentLineIndex].recording === null ? 'bi-mic-fill' : 'bi-repeat')"></i>
+        <button id="recordButton" class="circular-button large btn btn-primary">
+          <i class="bi bi-mic"></i>
         </button>
-        <button id="nextButton" class="circular-button small btn"
-          :class="isRecording ? 'btn-danger' : 'btn-success'"
-          @click="isRecording ? stopRecordingProcess().then((x) => {
-            lines[currentLineIndex].recording = x;
-            isRecording = !isRecording;
-          }) : currentLineIndex++">
-          <i class="bi bi-arrow-down-circle-fill" :class="isRecording ? 'bi-square-fill':'bi-arrow-down-circle-fill'"></i>
+        <button id="nextButton" class="circular-button small btn btn-success">
+          <i class="bi bi-arrow-down-circle-fill"></i>
         </button>
       </div>
     </div>
