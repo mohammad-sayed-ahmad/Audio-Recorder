@@ -24,7 +24,7 @@
   <section class="record-container" :class="stage == 'record' || 'hidden'">
     <ul class="completed-lines-list">
         <template x-for="(line, index) in lines" :key="index">
-            <li :class="{ 'active': index === currentLineIndex }" @click="currentLineIndex = index">
+            <li :class="index === currentLineIndex && 'active'" @click="currentLineIndex = index">
                 <template x-if="line.recording">
                     <i class="bi bi-check-circle-fill text-success me-2"></i>
                 </template>
