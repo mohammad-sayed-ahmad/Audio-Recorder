@@ -39,18 +39,27 @@
       </div>
       
       <audio id="audioPlayback"
-            :src="lines[currentLineIndex].recording"
+            :src="URL.createObjectURL(lines[currentLineIndex].recording)"
             controls class="mt-3 w-75"></audio>
 
       <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
         <button id="recordButton" class="circular-button large btn"
                 :class="isRecording ? 'btn-danger' : (lines[currentLineIndex].recording === null ? 'btn-primary' : 'btn-info')"
-                @click="isRecording ? stopRecording() : startRecording(lines, currentLineIndex); isRecording = !isRecording" >
+                @click="isRecording ? stopRecordingProcess().then((x) => {
+                  lines[currentLineIndex].recording = x;
+                  currentLineIndex++;
+                  }) : startRecordingProcess();
+                  isRecording = !isRecording">
           <i class="bi" 
              :class="isRecording ? 'bi-arrow-down-square-fill': (lines[currentLineIndex].recording === null ? 'bi-mic-fill' : 'bi-repeat')"></i>
         </button>
-        <button id="nextButton" class="circular-button small btn btn-success">
-          <i class="bi bi-arrow-down-circle-fill"></i>
+        <button id="nextButton" class="circular-button small btn"
+          :class="isRecording ? 'btn-danger' : 'btn-success'"
+          @click="isRecording ? stopRecordingProcess().then((x) => {
+            lines[currentLineIndex].recording = x;
+            isRecording = !isRecording;
+          }) : currentLineIndex++">
+          <i class="bi bi-arrow-down-circle-fill" :class="isRecording ? 'bi-square-fill':'bi-arrow-down-circle-fill'"></i>
         </button>
       </div>
     </div>
