@@ -57,7 +57,7 @@ function storeAudioData(currentIndex){
         getRequest.onsuccess = (e) => {
             const data = e.target.result;
             if (data) {
-                console.debug('Stored Audio data');
+                console.debug(`Stored Audio data with index ${currentIndex}`);
                 data.recording.push(event.data); // Push new blob to existing array
                 objectStore.put(data); // Put the updated data back
             } else {
@@ -75,30 +75,76 @@ function storeAudioData(currentIndex){
 }
 
 function startLineRecording(currentIndex){
-    mediaRecorder.requestData();
     const objectStore = db.transaction(["audioStore"], "readwrite").objectStore('audioStore');
     objectStore.put({
         index: currentIndex,
         recording: []
     });
     mediaRecorder.ondataavailable = storeAudioData(currentIndex);
-    mediaRecorder.requestData();
+    
 }
 
-async function startRecording(currentIndex, isRecording) {
+async function startRecording(currentIndex, alpineData) {
     if (!mediaRecorder){
         mediaRecorder = await setUpRecording();
     }
     mediaRecorder.start();
-    isRecording = true;
+    alpineData.isRecording = true;
     console.debug('MediaRecorder state:', mediaRecorder.state);
     startLineRecording(currentIndex);
 }
 
-function stopRecording(isRecording){
-    mediaRecorder.stop();
-    mediaRecorder.stream.getAudioTracks()[0].stop();
-    mediaRecorder = null;
+async function stopRecording(alpineData, final = true){
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+        return new Promise(async (resolve) => { // Return a promise for stopping
+            const originalOnDataAvailableHandler = mediaRecorder.ondataavailable; // Get the currently assigned handler
+            let ondataavailableHandled = false;
+
+            // Temporarily replace ondataavailable to handle the final blob and resolve
+            mediaRecorder.ondataavailable = async (event) => {
+                if (!ondataavailableHandled) { // Ensure it only runs once for the final blob
+                    ondataavailableHandled = true;
+                    // Call the original handler to process the data
+                    if (originalOnDataAvailableHandler) {
+                        await originalOnDataAvailableHandler(event); // Wait for its IndexedDB put to finish
+                    }
+                    resolve(); // Resolve the promise once the final data is stored
+                }
+            };
+
+            mediaRecorder.stop(); // This triggers the final ondataavailable
+            console.log("Recording stopped. Waiting for final data to store.");
+
+            // Add a timeout just in case ondataavailable doesn't fire or fails to resolve
+            setTimeout(() => {
+                if (!ondataavailableHandled) {
+                    console.warn("Timed out waiting for final ondataavailable event during stop.");
+                    resolve(); // Resolve even if timeout occurs
+                }
+            }, 2000); // 2 second timeout
+        }).then(() => {
+            if (final){
+                // This part runs AFTER the promise from the new ondataavailable handler resolves
+                if (mediaRecorder && mediaRecorder.stream) {
+                    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                    console.log("Stream tracks released.");
+                }
+                mediaRecorder = null; // Clear the recorder
+                alpineData.isRecording = false; // Update Alpine.js state
+            }
+        });
+    } else {
+        alpineData.isRecording = false; // Ensure state is false even if not recording
+        return Promise.resolve(); // Return a resolved promise if nothing to stop
+    }
+}
+
+
+async function moveToNextLineRecording(alpineData){
+    await stopRecording(alpineData, false);
+
+    alpineData.currentIndex++;
+    startRecording(alpineData.currentIndex, alpineData);
 }
 
 setUpDB();
