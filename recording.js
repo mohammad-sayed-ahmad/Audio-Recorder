@@ -123,6 +123,7 @@ async function stopRecording(alpineData, final = true){
                 }
             }, 2000); // 2 second timeout
         }).then(() => {
+            alpineData.lines[alpineData.currentIndex].completed = true; 
             if (final){
                 // This part runs AFTER the promise from the new ondataavailable handler resolves
                 if (mediaRecorder && mediaRecorder.stream) {

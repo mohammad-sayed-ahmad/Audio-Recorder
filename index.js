@@ -14,7 +14,7 @@ function generateLines(text) {
     for (const [index, line] of text.split('\n').entries()){
         newLines.push({
             text: line,
-            recording: null
+            completed: false
         })
     }
     return newLines;

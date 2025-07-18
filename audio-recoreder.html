@@ -25,7 +25,7 @@
     <ul class="completed-lines-list">
         <template x-for="(line, index) in lines" :key="index">
             <li :class="index === currentIndex && 'active'" @click="currentIndex = index">
-                <template x-if="line.recording">
+                <template x-if="line.completed">
                     <i class="bi bi-check-circle-fill text-success me-2"></i>
                 </template>
                 <span x-text="line.text"></span>
