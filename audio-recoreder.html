@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Audio Recorder</title>
-  <link rel="stylesheet" href="./static/bootstrap.min.css">
-  <link rel="stylesheet" href="./bootstrap-icons-1.13.1/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="./index.css">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+    <link rel="stylesheet" href="./static/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap-icons-1.13.1/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./index.css">
+    <script src="recording.js"></script>
 </head>
 <body x-data="{stage: $persist('import'), lines: $persist([])}">
   <menu class="top-tabs">
@@ -38,7 +39,7 @@
           <h2 x-text="lines[currentIndex].text" ></h2>
       </div>
       
-      <audio id="audioPlayback" controls class="mt-3 w-75"></audio>
+      <audio id="audioPlayback" controls class="mt-3 w-75" :src="getRecordingURL(currentIndex)"></audio>
 
       <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
         <button id="recordButton" class="circular-button large btn"
@@ -62,6 +63,5 @@
   <script src="./static/persist.js"></script>
   <script src="./static/alpine.js"></script>
   <script src="index.js"></script>
-  <script src="recording.js"></script>
 </body>
 </html>

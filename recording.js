@@ -148,4 +148,40 @@ async function moveToNextLineRecording(alpineData){
     startRecording(alpineData.currentIndex, alpineData);
 }
 
+// Replace your existing getRecordingURL function with this:
+async function getRecordingURL(index) {
+    // Wait for DB to be initialized if it's not ready yet
+    while (!db) {
+        await new Promise(resolve => setTimeout(resolve, 50)); // Wait 50ms and check again
+    }
+
+    const transaction = db.transaction(["audioStore"], "readonly");
+    const objectStore = transaction.objectStore('audioStore');
+
+    return new Promise((resolve, reject) => {
+        const getRequest = objectStore.get(index);
+
+        getRequest.onsuccess = (event) => {
+            const data = event.target.result;
+            console.debug(`Looking for recording at index ${index}:`, data); // Debug log
+            
+            if (data && data.recording && data.recording.length > 0) {
+                console.debug(`Found recording with ${data.recording.length} chunks for index ${index}`);
+                const recordingBlob = new Blob(data.recording, { type: 'audio/webm' });
+                resolve(URL.createObjectURL(recordingBlob));
+            } else {
+                console.warn(`No recording data found for index ${index}. Data structure:`, data);
+                resolve(''); // Resolve with empty string if no data
+            }
+        };
+
+        getRequest.onerror = (event) => {
+            console.error("Error retrieving recording from IndexedDB:", event.target.error);
+            reject(''); // Reject the promise on error
+        };
+    });
+}
+
+
+
 setUpDB();
