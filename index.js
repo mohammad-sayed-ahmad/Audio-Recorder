@@ -19,3 +19,15 @@ function generateLines(text) {
     }
     return newLines;
 }
+
+function moveToNextLine(alpineData){
+    if (alpineData.currentIndex >= (alpineData.lines.length - 1)){
+        alpineData.stage = 'export';
+    } else {
+        alpineData.currentIndex++;
+    }
+}
+
+function isLast(alpineData){
+    return (alpineData.lines.length - 1) == alpineData.currentIndex
+}

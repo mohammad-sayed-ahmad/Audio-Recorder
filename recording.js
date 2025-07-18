@@ -142,10 +142,14 @@ async function stopRecording(alpineData, final = true){
 
 
 async function moveToNextLineRecording(alpineData){
-    await stopRecording(alpineData, false);
-
-    alpineData.currentIndex++;
-    startRecording(alpineData.currentIndex, alpineData);
+    if (alpineData.currentIndex >= (alpineData.lines.length - 1)){
+        await stopRecording(alpineData);
+        alpineData.stage = 'export';
+    } else {
+        await stopRecording(alpineData, false);
+        alpineData.currentIndex++;
+        startRecording(alpineData.currentIndex, alpineData);
+    }
 }
 
 // Replace your existing getRecordingURL function with this:
