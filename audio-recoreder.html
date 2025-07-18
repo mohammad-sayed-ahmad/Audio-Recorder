@@ -41,12 +41,19 @@
       <audio id="audioPlayback" controls class="mt-3 w-75"></audio>
 
       <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
-        <button id="recordButton" class="circular-button large btn btn-primary" @click="startRecording(currentIndex)">
-          <i class="bi bi-mic"></i>
+        <button id="recordButton" class="circular-button large btn btn-primary"
+        @click="startRecording(currentIndex)">
+
+          <i class="bi" :class="isRecording ? 'bi-arrow-down' : 'bi-mic'"></i>
+
         </button>
-        <button id="nextButton" class="circular-button small btn btn-danger">
+
+        <button id="nextButton" class="circular-button small btn btn-danger"
+        @click="stopRecording()">
+
           <i class="bi bi-square-fill"></i>
         </button>
+
       </div>
     </div>
     </section>
