@@ -89,9 +89,9 @@ async function startRecording(currentIndex, alpineData) {
         mediaRecorder = await setUpRecording();
     }
     mediaRecorder.start();
-    alpineData.isRecording = true;
     console.debug('MediaRecorder state:', mediaRecorder.state);
     startLineRecording(currentIndex);
+    alpineData.isRecording = true;
 }
 
 async function stopRecording(alpineData, final = true){
@@ -181,7 +181,5 @@ async function getRecordingURL(index) {
         };
     });
 }
-
-
 
 setUpDB();
