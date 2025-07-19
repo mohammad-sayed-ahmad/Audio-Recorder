@@ -142,7 +142,6 @@ body {
     }
     
     li:hover, li:focus {
-        z-index: 1;
         background-color: rgba(255, 255, 255, 0.1);
     }
 
@@ -151,3 +150,11 @@ body {
     }
 }
 
+.export-container {
+    display: flex;
+    justify-content: center;
+
+    height: 40vh;
+    align-items: center;
+
+}

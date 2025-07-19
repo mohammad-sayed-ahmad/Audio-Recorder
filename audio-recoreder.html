@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="./index.css">
     <script src="recording.js"></script>
     <script src="index.js" async></script>
+    <script src="export.js" async></script>
+
   </head>
 <body x-data="{stage: $persist('import'), lines: $persist([])}">
   <menu class="top-tabs">
@@ -61,7 +63,14 @@
       </div>
     </div>
     </section>
+    <section class="export-container" :class="stage == 'export'|| 'hidden'">
+      <button class="btn btn-outline-primary btn-lg" @click="exportRecording(lines)">
+        <i class="bi bi-upload"></i>
+        Export</button>
+
+    </section>
   <script src="./static/persist.js"></script>
-  <script src="./static/alpine.js"></script>
+  <script src="./static/alpine.js" defer></script>
+  <script src="./static/jszip.min.js" async></script>
 </body>
 </html>

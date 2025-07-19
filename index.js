@@ -17,6 +17,7 @@ function generateLines(text) {
             completed: false
         })
     }
+    resetDB();
     return newLines;
 }
 
@@ -30,4 +31,10 @@ function moveToNextLine(alpineData){
 
 function isLast(alpineData){
     return (alpineData.lines.length - 1) == alpineData.currentIndex
+}
+
+function resetDB(){
+    const objectStore = db.transaction(["audioStore"], "readwrite").objectStore("audioStore");
+
+    objectStore.clear();
 }
