@@ -150,4 +150,5 @@ async function exportRecording(lines) {
         });
 
     console.log("Exporting Recording function finished execution (asynchronously).");
+    resetDB();
 }
