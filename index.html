@@ -64,7 +64,7 @@
     </div>
     </section>
     <section class="export-container" :class="stage == 'export'|| 'hidden'">
-      <button class="btn btn-outline-primary btn-lg" @click="exportRecording(lines)">
+      <button class="btn btn-outline-primary btn-lg" @click="exportRecording(lines);changeText(''); stage = 'import'">
         <i class="bi bi-upload"></i>
         Export</button>
 

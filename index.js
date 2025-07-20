@@ -1,10 +1,15 @@
 const textArea = document.getElementById("importArea");
+function changeText(text){
+    textArea.value = text;
+    textArea.dispatchEvent(new Event('input'));
+}
+
+
 async function modifyImportArea(event) {
     const importFileText = await event.target.files[0].text();
     const trimmedText = importFileText.trim();
     
-    textArea.value = trimmedText;
-    textArea.dispatchEvent(new Event('input'));
+    changeText(trimmedText);
     
 }
 document.getElementById("importFile").addEventListener("input", modifyImportArea)
