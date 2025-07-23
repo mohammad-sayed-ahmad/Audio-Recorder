@@ -198,35 +198,42 @@ async function exportRecording(lines) {
     // Wait for all individual audio segments to be processed by getBlobWithDuration
     console.log("Waiting for all individual audio segment promises to resolve...");
     // Filter out any segments that failed to process (returned null)
+     console.log("Waiting for all individual audio segment promises to resolve...");
     const processedSegments = (await Promise.all(audioSegmentsPromises)).filter(Boolean);
 
     const audioBuffersToConcatenate = [];
 
     // Now, iterate through the successfully processed segments
     for (const segment of processedSegments) {
-        const { blob, duration, lineText, index: segmentIndex, originalRecordingData } = segment;
+        // We get the original recording data, not a pre-made blob
+        const { duration, lineText, index: segmentIndex, originalRecordingData } = segment;
 
-        // Add individual WAV file to the zip
-        zip.file(`split/${segmentIndex}-${lineText}.wav`, blob);
+        // Decode the original recording data into an AudioBuffer
+        let audioBuffer;
+        try {
+            // Use the original data which is in a container format like mp4
+            const segmentBlobForDecoding = new Blob(originalRecordingData);
+            const arrayBuffer = await segmentBlobForDecoding.arrayBuffer();
+            audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            audioBuffersToConcatenate.push(audioBuffer);
+        } catch (e) {
+            console.error(`Error decoding audio blob for WAV conversion (line ${segmentIndex}):`, e);
+            continue; // Skip this file if it can't be decoded
+        }
+
+        // Generate a proper WAV Blob from the AudioBuffer
+        const wavBlob = generateWavBlob(audioBuffer); // Use your existing function!
+
+        // Add the new WAV file to the zip
+        zip.file(`split/${segmentIndex}-${lineText}.wav`, wavBlob);
 
         // Update subtitle content
         subtitle += `${index}\n${formatDuraion(startLength)} --> ${formatDuraion(startLength + duration)}\n${lineText}\n\n`;
 
-        // Decode the blob into an AudioBuffer for concatenation
-        try {
-            // Re-create blob from original data if necessary, or use the one from getBlobWithDuration
-            const segmentBlobForDecoding = new Blob(originalRecordingData, { type: 'audio/wav' });
-            const arrayBuffer = await segmentBlobForDecoding.arrayBuffer();
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-            audioBuffersToConcatenate.push(audioBuffer);
-        } catch (e) {
-            console.error(`Error decoding audio blob for full recording concatenation (line ${segmentIndex}):`, e);
-            // If a segment fails here, it won't be included in the full recording.
-        }
-
         index++;
         startLength += duration;
     }
+
 
     // --- Concatenate all AudioBuffers into a single AudioBuffer for the full recording ---
     let fullRecordingBlob = null;

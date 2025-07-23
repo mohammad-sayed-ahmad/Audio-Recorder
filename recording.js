@@ -7,7 +7,8 @@ function setUpRecording() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({audio: true})
         .then((stream) => {
-            const recorder = new MediaRecorder(stream);
+            const options = { mimeType: 'audio/mp4' }; // Request MP4 audio
+            const recorder = new MediaRecorder(stream, options);
             recorder.onerror = () => {
                 console.error("Issue with recording.");
             }
@@ -171,7 +172,7 @@ async function getRecordingURL(index) {
             
             if (data && data.recording && data.recording.length > 0) {
                 console.debug(`Found recording with ${data.recording.length} chunks for index ${index}`);
-                const recordingBlob = new Blob(data.recording, { type: 'audio/webm' });
+                const recordingBlob = new Blob(data.recording, { type: 'audio/mp4' });
                 resolve(URL.createObjectURL(recordingBlob));
             } else {
                 console.warn(`No recording data found for index ${index}. Data structure:`, data);
