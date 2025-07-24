@@ -140,7 +140,7 @@ async function exportRecording(lines) {
     }
 
     let zip = new JSZip();
-    let subtitle = 'WEBVTT\n\n';
+    let subtitle = '';
     let startLength = 0;
     let index = 1;
 
@@ -278,7 +278,7 @@ async function exportRecording(lines) {
     }
 
     // Add the subtitle file to the zip
-    zip.file("subtitles.vtt", subtitle);
+    zip.file("subtitles.srt", subtitle);
 
     // Generate the final zip file
     zip.generateAsync({ type: "blob" })
